@@ -43,21 +43,15 @@ export const post: APIRoute = async(context) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   // `${baseUrl}/v1/chat/completions`
-  const response = (await fetch(
-    `${baseUrl}/openai/deployments/chatgpt/chat/completions?api-version=2023-03-15-preview`,
-    initOptions
-  ).catch((err: Error) => {
-    console.error(err);
-    return new Response(
-      JSON.stringify({
-        error: {
-          code: err.name,
-          message: err.message,
-        },
-      }),
-      { status: 500 }
-    );
-  })) as Response;
+  const response = await fetch(`${baseUrl}/v1/chat/completions`, initOptions).catch((err: Error) => {
+    console.error(err)
+    return new Response(JSON.stringify({
+      error: {
+        code: err.name,
+        message: err.message,
+      },
+    }), { status: 500 })
+  }) as Response
 
   return parseOpenAIStream(response) as Response
 }
