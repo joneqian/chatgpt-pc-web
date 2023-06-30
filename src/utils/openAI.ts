@@ -1,13 +1,27 @@
+/*
+ * @Author: leyi leyi@myun.info
+ * @Date: 2023-03-30 14:44:36
+ * @LastEditors: leyi leyi@myun.info
+ * @LastEditTime: 2023-06-30 11:26:50
+ * @FilePath: /chatgpt-pc-web/src/utils/openAI.ts
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 import { createParser } from 'eventsource-parser'
 import type { ParsedEvent, ReconnectInterval } from 'eventsource-parser'
 import type { ChatMessage } from '@/types'
 
 const model = (import.meta.env.OPENAI_API_MODEL ?? process.env.OPENAI_API_MODEL) || 'gpt-3.5-turbo'
 
-export const generatePayload = (apiKey: string, messages: ChatMessage[]): RequestInit & { dispatcher?: any } => ({
+export const generatePayload = (
+  apiKey: string,
+  messages: ChatMessage[],
+): RequestInit & { dispatcher?: any } => ({
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${apiKey}`,
+    'api-key': apiKey,
   },
   method: 'POST',
   body: JSON.stringify({
